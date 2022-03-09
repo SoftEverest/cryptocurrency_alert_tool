@@ -1,0 +1,65 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" [attr.aria-expanded]="!collapsed"
+        (click)="toggleCollapse()" [ngClass]="{'collapsed': collapsed}">
+        <span class="sr-only">{{'label.navigation' | translate}}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a routerLink="/" class="navbar-brand">
+        <img src="assets/bitcoin.png" alt="Logo">
+      </a>
+      <a routerLink="/">
+        <span class="navbar-brand">Crypto Coin Alerts</span>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse" [ngClass]="{'in': !collapsed}">
+      <ul class="nav navbar-nav">
+        <li *ngFor="let tab of tabs" [ngClass]="{ 'active': isSelected(tab.path) }">
+          <!-- TODO: check why [hidden] attribute is not working -->
+          <a href="#" *ngIf="isDisplayable(tab)" routerLink="{{tab.path}}">{{tab.label | translate}}</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li *ngIf="isAuthenticated()">
+          <p class="navbar-text left-padding">{{getAuthenticatedUser()}}</p>
+        </li>
+        <li *ngIf="isAuthenticated()">
+          <a href="#" (click)="logout()">{{'label.logout' | translate}}</a>
+        </li>
+        <!-- user -->
+        <li *ngIf="!isAuthenticated()">
+          <a href="#" routerLink="/new-account">{{'label.newAccount' | translate}}</a>
+        </li>
+        <li *ngIf="!isAuthenticated()">
+          <a routerLink="/login">{{'label.login' | translate}}</a>
+        </li>
+        <!-- language -->
+        <li class="dropdown left-padding" dropdown>
+          <div class="navbar-form">
+            <div class="btn-group" dropdown>
+              <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                <!-- TODO: Display current lang -->
+                {{'label.language' | translate}}
+                <span class="caret"></span>
+              </button>
+              <!-- TODO: load langs dynamically -->
+              <ul *dropdownMenu class="dropdown-menu">
+                <li [ngClass] = "{'disabled': languageService.getLang() === 'en'}">
+                  <a href="#" (click)="setLang('en')">{{'en' | translate}}</a>
+                </li>
+                <li [ngClass]="{'disabled': languageService.getLang() === 'es'}">
+                  <a href="#" (click)="setLang('es')">{{'es' | translate}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

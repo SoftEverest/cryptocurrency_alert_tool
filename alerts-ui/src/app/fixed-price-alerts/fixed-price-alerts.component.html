@@ -1,0 +1,61 @@
+<div class="col-sm-offset-1 app-content">
+  <legend>{{'label.yourAlerts' | translate}}</legend>
+  <div class=text-left>
+    <a routerLink="/new-fixed-price-alert" class="btn-info btn">{{'action.newAlert' | translate}}</a>
+  </div>
+
+  <div>
+    <label for="order">{{'label.sort' | translate}}</label>
+    <select [(ngModel)]="orderBy" (change)="reloadPage()" id="order">
+      <option value="createdOn">{{'field.createdOn' | translate}}</option>
+      <option value="exchange">{{'field.exchange' | translate}}</option>
+      <option value="currency">{{'field.currency' | translate}}</option>
+    </select>
+
+    <label for="reverseOrder">{{'label.reverseOrder' | translate}}</label>
+    <input id="reverseOrder" type="checkbox" [(ngModel)]="reverseOrder" (change)="reloadPage()" >
+  </div>
+
+  <div>
+    <label for="triggered">{{'label.display' | translate}}</label>
+    <select [(ngModel)]="triggered" (change)="reloadPage()" id="triggered">
+      <option value="false">{{'field.pendingAlerts' | translate}}</option>
+      <option value="true">{{'field.triggeredAlerts' | translate}}</option>
+      <option value="*">{{'field.all' | translate}}</option>
+    </select>
+  </div>
+
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="col-xs-2 col-sm-2 col-md-1 col-lg-1">{{'field.createdOn' | translate}}</th>
+        <th class="col-xs-2 col-sm-2 col-md-1 col-lg-1">{{'field.exchange' | translate}}</th>
+        <th class="col-xs-1 col-sm-1 col-md-1 col-lg-1">{{'field.currency' | translate}}</th>
+        <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">{{'field.priceCondition' | translate}}</th>
+        <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">{{'field.basePrice' | translate}}</th>
+        <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">{{'field.triggeredOn' | translate}}</th>
+        <th class="col-xs-1 col-sm-1 col-md-3 col-lg-3"></th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <tr *ngFor="let item of asyncItems | async | paginate: { id: 'fixedPriceAlerts', itemsPerPage: pageSize, currentPage: currentPage, totalItems: total }">
+        <td>{{item.createdOn}}</td>
+        <td>{{item.exchange}}</td>
+        <td>{{item.currency}}</td>
+        <td [hidden]="item.isGreaterThan">{{'field.below' | translate}} {{item.price}} {{item.market}}</td>
+        <td [hidden]="!item.isGreaterThan">{{'field.above' | translate}} {{item.price}} {{item.market}}</td>
+        <td [hidden]="!item.basePrice">{{item.basePrice}} {{item.market}}</td>
+        <td [hidden]="item.basePrice"></td>
+        <td>{{item.triggeredOn}}</td>
+        <td>
+          <input (click)="delete(item)" type="button" class="btn btn-danger" value="{{'action.delete' | translate}}"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div class="has-text-centered">
+    <pagination-controls (pageChange)="getPage($event)" id="fixedPriceAlerts"></pagination-controls>
+  </div>
+</div>

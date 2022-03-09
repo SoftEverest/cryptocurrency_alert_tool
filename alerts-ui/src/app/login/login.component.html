@@ -1,0 +1,38 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate role="form" class="form-horizontal app-content">
+
+  <legend class="col-sm-offset-1">{{'label.login' | translate}}</legend>
+
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'email'), 'has-error': errorService.hasWrongValue(form, 'email') }" class="form-group">
+    <label for="email" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.email' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <input formControlName="email" type="email" id="email" name="email" class="form-control">
+    </div>
+
+    <div [hidden]="!errorService.hasWrongValue(form, 'email')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'email') | translate }}</span>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'has-error': errorService.hasWrongValue(form, 'password'), 'has-success': errorService.hasCorrectValue(form, 'password') }" class="form-group has-success">
+    <label for="password" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.password' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <input formControlName="password" type="password" id="password" name="password" class="form-control">
+    </div>
+    <div [hidden]="!errorService.hasWrongValue(form, 'password')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'password') | translate }}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+      <div class="col-xs-3 col-xs-offset-3 col-sm-3 col-sm-offset-3 col-md-2 col-md-offset-2 col-lg-2 col-lg-offset-2">
+          <re-captcha site_key="{{reCaptchaService.siteKey}}"
+          (captchaResponse)="onCaptchaResolved($event)"
+          (captchaExpired)="onCaptchaExpired()"></re-captcha>
+      </div>
+  </div>
+
+  <div class="text-left col-sm-offset-2">
+    <a routerLink="/" class="btn btn-danger">{{'action.cancel' | translate}}</a>
+    <input type="submit" [disabled]="!form.valid" value="{{ 'action.login' | translate }}" class="btn btn-primary">
+  </div>
+</form>

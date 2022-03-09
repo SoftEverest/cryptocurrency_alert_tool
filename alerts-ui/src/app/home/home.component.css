@@ -1,0 +1,25 @@
+.home-description {
+  font-weight: bold;
+}
+
+#home-examples {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#home-accountRequired {
+  font-weight: 500;
+  font-size: 25px;
+}
+
+#home-supported-exchanges {
+  font-size: 20px;
+}
+
+.max-width {
+  max-width: 100%;
+}
+
+#home-alertTypes {
+  padding: 2em 0 1em;
+}

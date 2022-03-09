@@ -1,0 +1,55 @@
+<div class="container app-content">
+
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 home-description">
+    <header>
+      <h2>{{'home.descripion' | translate}}</h2>
+    </header>
+
+    <div id="home-alertTypes" [innerHTML]="'home.alertTypes' | translate"></div>
+
+    <div>
+      <label id="home-supported-exchanges">{{'label.supportedExchanges' | translate}}:</label>
+      <a href="https://bittrex.com/">BITTREX</a>,
+      <a href="https://www.binance.com/">BINANCE</a>,
+      <a href="https://bitso.com/">BITSO</a>,
+      <a href="https://coinmarketcap.com/">COINMARKETCAP</a>,
+      <a href="https://hitbtc.com/">HITBTC</a>,
+      <a href="https://www.kucoin.com/">KUCOIN</a>
+    </div>
+
+    <div [hidden]="authService.isAuthenticated()">
+      <p id="home-accountRequired">
+        {{'message.accountNeeded.question' | translate}}
+        <a routerLink="/new-account">{{'message.accountNeeded.new' | translate}}</a> {{'message.accountNeeded.or' | translate}}
+        <a routerLink="/login">{{'message.accountNeeded.login' | translate}}</a> {{'message.accountNeeded.last' | translate}}.
+      </p>
+
+      <div>
+        <button type="button" class="btn btn-danger" (click)="emailNotReceivedHelpCollapsed = !emailNotReceivedHelpCollapsed">
+          {{'label.emailNotReceived' | translate}}
+        </button>
+        <div [collapse]="emailNotReceivedHelpCollapsed" class="card card-block card-header">
+          <div class="well" [innerHTML]="'home.emailNotReceivedHelp' | translate"></div>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <label id="home-examples">{{'home.examples' | translate}}</label>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <img class="max-width" src="assets/new-currencies-email.png" alt="New Currency Email">
+      </div>
+      <div class="panel-footer">{{'home.newCurrenciesAlertExample' | translate}}</div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <img class="max-width" src="assets/price-alert-email.png" alt="Price Alert Email">
+      </div>
+      <div class="panel-footer">{{'home.priceAlertExample' | translate}}</div>
+    </div>
+  </div>
+
+</div>

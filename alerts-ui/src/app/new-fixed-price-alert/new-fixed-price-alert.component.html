@@ -1,0 +1,106 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate role="form" class="form-horizontal app-content">
+
+  <legend class="col-sm-offset-1">{{'label.createFixedPriceAlert' | translate}}</legend>
+
+  <!-- TODO: Add help block explaining the alert -->
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'exchange'), 'has-error': errorService.hasWrongValue(form, 'exchange') }"
+    class="form-group">
+    <label for="exchange" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.exchange' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <select formControlName="exchange"
+              (change)="onExchangeSelected($event.target.value)"
+              id="exchange" class="form-control" >
+        <option *ngFor="let exchange of availableExchanges" [value]="exchange">{{exchange}}</option>
+      </select>
+    </div>
+  
+    <div [hidden]="!errorService.hasWrongValue(form, 'exchange')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'exchange') | translate }}</span>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'market'), 'has-error': errorService.hasWrongValue(form, 'market') }"
+    class="form-group">
+    <label for="market" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.market' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <select formControlName="market"
+              (change)="onMarketSelected($event.target.value)"
+              id="market"
+              class="form-control">
+        <option *ngFor="let market of availableMarkets | async" [value]="market">{{market}}</option>
+      </select>
+    </div>
+  
+    <div [hidden]="!errorService.hasWrongValue(form, 'market')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'market') | translate }}</span>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'currency'), 'has-error': errorService.hasWrongValue(form, 'currency') }"
+    class="form-group">
+    <label for="currency" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.currency' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <select formControlName="currency"
+              [(ngModel)]="selectedCurrency"
+              id="currency"
+              class="form-control">
+        <option *ngFor="let currency of availableCurrencies | async" [ngValue]="currency">{{getCurrencyText(currency)}}</option>
+      </select>
+    </div>
+
+    <div [hidden]="!errorService.hasWrongValue(form, 'currency')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'currency') | translate }}</span>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'price'), 'has-error': errorService.hasWrongValue(form, 'price') }"
+    class="form-group">
+    <label for="price" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.price' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <input formControlName="price" type="number" id="price" class="form-control">
+    </div>
+  
+    <div [hidden]="!errorService.hasWrongValue(form, 'price')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'price') | translate }}</span>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'condition'), 'has-error': errorService.hasWrongValue(form, 'condition') }"
+    class="form-group">
+    <label for="condition" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.priceCondition' | translate }}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <select formControlName="condition" id="condition" class="form-control">
+        <option value="above">{{'field.above' | translate}}</option>
+        <option value="below">{{'field.below' | translate}}</option>
+      </select>
+    </div>
+  
+    <div [hidden]="!errorService.hasWrongValue(form, 'condition')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'condition') | translate }}</span>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'has-success': errorService.hasCorrectValue(form, 'basePrice'), 'has-error': errorService.hasWrongValue(form, 'basePrice') }"
+    class="form-group">
+    <label for="basePrice" class="col-xs-3 col-sm-3 col-md-2 col-lg-2 control-label">{{ 'field.basePrice' | translate }} - {{'field.optional' | translate}}</label>
+    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+      <input formControlName="basePrice" type="number" id="basePrice" class="form-control">
+    </div>
+  
+    <div [hidden]="!errorService.hasWrongValue(form, 'basePrice')" class="col-xs-4 col-sm-4 col-md-3 col-md-3">
+      <span class="help-block">{{ errorService.getFieldError(form, 'basePrice') | translate }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="displayMessage()" class="col-sm-offset-1">
+    <h4>
+      <div [translate]="messageKey()" [translateParams]="messageParams()"></div>
+    </h4>
+    <hr />
+  </div>
+
+  <div class="text-left col-sm-offset-2">
+    <a routerLink="/fixed-price-alerts" class="btn btn-danger">{{'action.cancel' | translate}}</a>
+    <input type="submit" [disabled]="!form.valid" value="{{ 'action.createAlert' | translate }}" class="btn btn-primary">
+  </div>
+</form>

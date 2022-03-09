@@ -1,0 +1,27 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+GET    /health                          controllers.HealthController.check()
+POST   /users                           controllers.UsersController.create()
+POST   /users/verify-email/:token       controllers.UsersController.verifyEmail(token: com.alexitc.coinalerts.models.UserVerificationToken)
+POST   /users/login                     controllers.UsersController.loginByEmail()
+GET    /users/me                        controllers.UsersController.whoAmI()
+GET    /users/me/preferences            controllers.UsersController.getPreferences()
+PUT    /users/me/preferences            controllers.UsersController.setPreferences()
+
+POST   /fixed-price-alerts              controllers.FixedPriceAlertsController.create()
+GET    /fixed-price-alerts              controllers.FixedPriceAlertsController.getAlerts(query: com.alexitc.playsonify.models.PaginatedQuery, filterQuery: com.alexitc.coinalerts.core.FilterQuery, orderByQuery: com.alexitc.playsonify.models.OrderingQuery)
+DELETE /fixed-price-alerts/:id          controllers.FixedPriceAlertsController.delete(id: com.alexitc.coinalerts.models.FixedPriceAlertId)
+
+POST   /daily-price-alerts              controllers.DailyPriceAlertsController.create()
+GET    /daily-price-alerts              controllers.DailyPriceAlertsController.getAlerts(query: com.alexitc.playsonify.models.PaginatedQuery)
+
+GET    /currencies/:id                                 controllers.ExchangeCurrenciesController.getCurrency(id: com.alexitc.coinalerts.models.ExchangeCurrencyId)
+GET    /exchanges/:exchange/markets                    controllers.ExchangeCurrenciesController.getMarkets(exchange: com.alexitc.coinalerts.models.Exchange)
+GET    /exchanges/:exchange/markets/:market/currencies controllers.ExchangeCurrenciesController.getCurrencies(exchange: com.alexitc.coinalerts.models.Exchange, market: com.alexitc.coinalerts.models.Market)
+
+POST   /new-currency-alerts/:exchange   controllers.NewCurrencyAlertsController.create(exchange: com.alexitc.coinalerts.models.Exchange)
+GET    /new-currency-alerts             controllers.NewCurrencyAlertsController.get()
+DELETE /new-currency-alerts/:exchange   controllers.NewCurrencyAlertsController.delete(exchange: com.alexitc.coinalerts.models.Exchange)
